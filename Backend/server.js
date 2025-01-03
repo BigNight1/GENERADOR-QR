@@ -4,7 +4,7 @@ import QRCode from "qrcode";
 
 const app = express();
 const corsOptions = {
-  origin: "https://generador-qr-three.vercel.app/",
+  origin: "https://generador-qr-three.vercel.app",
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type,Authorization",
 };
