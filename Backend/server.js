@@ -1,25 +1,30 @@
-import express from 'express';
-import cors from 'cors';
-import QRCode from 'qrcode';
+import express from "express";
+import cors from "cors";
+import QRCode from "qrcode";
 
 const app = express();
-app.use(cors());
+const corsOptions = {
+  origin: "https://generador-qr-three.vercel.app/",
+  methods: "GET,POST,PUT,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Endpoint para generar código QR
-app.post('/generate-qr', async (req, res) => {
+app.post("/generate-qr", async (req, res) => {
   const { url } = req.body;
-  
+
   if (!url) {
-    return res.status(400).json({ error: 'URL es requerida' });
+    return res.status(400).json({ error: "URL es requerida" });
   }
 
   try {
-    const qrCodeImage = await QRCode.toDataURL(url); // Genera QR en formato Base64
+    const qrCodeImage = await QRCode.toDataURL(url);
     res.json({ qrCode: qrCodeImage });
   } catch (error) {
-    console.error('Error generando el QR:', error);
-    res.status(500).json({ error: 'Error generando el código QR' });
+    console.error("Error generando el QR:", error);
+    res.status(500).json({ error: "Error generando el código QR" });
   }
 });
 
