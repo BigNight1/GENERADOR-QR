@@ -12,7 +12,7 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await fetch('https://generador-qr.onrender.com', {
+      const response = await fetch('https://generador-qr.onrender.com/generate-qr', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
