@@ -12,7 +12,7 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await fetch('https://generador-qr.onrender.com/generate-qr', {
+      const response = await fetch('generador-qr-production.up.railway.app', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
