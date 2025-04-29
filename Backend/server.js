@@ -4,7 +4,12 @@ import QRCode from "qrcode";
 
 const app = express();
 
-app.use(cors());
+// Configuración básica
+app.use(cors({
+  origin: 'https://generador-qr-three.vercel.app',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type']
+}));
 
 app.use(express.json());
 
@@ -18,8 +23,6 @@ app.post("/generate-qr", async (req, res) => {
 
   try {
     const qrCodeImage = await QRCode.toDataURL(url);
-    // Agregamos headers explícitamente en la respuesta
-    res.header('Access-Control-Allow-Origin', '*');
     res.json({ qrCode: qrCodeImage });
   } catch (error) {
     console.error("Error generando el QR:", error);
@@ -27,8 +30,5 @@ app.post("/generate-qr", async (req, res) => {
   }
 });
 
-// Inicia el servidor
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
+// Para Vercel, necesitamos exportar la app
+export default app;
