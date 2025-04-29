@@ -4,13 +4,7 @@ import QRCode from "qrcode";
 
 const app = express();
 
-// Configuración de CORS simplificada y permisiva
-app.use(cors({
-  origin: '*', // Permite todas las solicitudes
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: false // Deshabilitamos credentials ya que usamos origin: '*'
-}));
+app.use(cors());
 
 app.use(express.json());
 
