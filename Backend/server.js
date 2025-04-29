@@ -4,11 +4,7 @@ import QRCode from "qrcode";
 
 const app = express();
 
-app.use(cors({
-  origin: 'https://generador-qr-three.vercel.app',
-  methods: ['GET','POST','OPTIONS'],
-  allowedHeaders: ['Content-Type']
-}));
+app.use(cors());
 
 app.use(express.json());
 
