@@ -5,13 +5,19 @@ import QRCode from "qrcode";
 const app = express();
 
 // Configuración de CORS más completa
-app.use(cors({
-  origin: 'https://generador-qr-three.vercel.app/',
+const corsOptions = {
+  origin: 'https://generador-qr-three.vercel.app',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
-  optionsSuccessStatus: 200
-}));
+  optionsSuccessStatus: 200,
+  preflightContinue: false
+};
+
+app.use(cors(corsOptions));
+
+// Para manejar preflight requests
+app.options('*', cors(corsOptions));
 
 app.use(express.json());
 
