@@ -4,12 +4,14 @@ import QRCode from "qrcode";
 
 const app = express();
 
+// Configuración de CORS más completa
 app.use(cors({
-  origin: 'https://generador-qr-three.vercel.app', // Tu frontend
-  methods: ['GET', 'POST'], // Métodos permitidos
+  origin: 'https://generador-qr-three.vercel.app',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 200
 }));
-
-app.options('*', cors()); // 🔧 Agrega esto para responder las preflight
 
 app.use(express.json());
 
@@ -31,7 +33,7 @@ app.post("/generate-qr", async (req, res) => {
 });
 
 // Inicia el servidor
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
