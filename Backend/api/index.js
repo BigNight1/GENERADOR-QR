@@ -4,22 +4,7 @@ import QRCode from "qrcode";
 
 const app = express();
 
-// Middleware para habilitar CORS según la documentación de Vercel
-const allowCors = fn => async (req, res) => {
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-  return await fn(req, res);
-};
-
+app.use(cors());
 app.use(express.json());
 
 // Ruta de prueba
@@ -45,12 +30,17 @@ const generateQRHandler = async (req, res) => {
 };
 
 // Aplicamos el middleware allowCors al handler
-app.post("/api/generate-qr", allowCors(generateQRHandler));
+app.post("/api/generate-qr", (generateQRHandler));
 
 // Manejo de errores
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Algo salió mal!' });
+});
+
+const PORT = process.env.PORT || 3800;
+app.listen(PORT, () => {
+  console.log(`Servidor iniciado en el puerto ${PORT}`);
 });
 
 // Vercel necesita que exportemos la configuración de express
