@@ -2,11 +2,12 @@
   "name": "generador-qr-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "api/index.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "vercel-build": "echo 'API lista para deployment - No se requiere build'"
+    "start": "node api/index.js",
+    "dev": "node api/index.js",
+    "vercel-build": "echo 'Build completado'"
   },
   "keywords": [],
   "author": "",
