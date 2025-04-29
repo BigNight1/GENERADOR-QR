@@ -4,8 +4,22 @@ import QRCode from "qrcode";
 
 const app = express();
 
-app.use(cors());
+// Configuración de CORS para permitir todas las solicitudes
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
+
+// Middleware para agregar headers CORS en todas las respuestas
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
 // Ruta de prueba
 app.get('/api', (req, res) => {
