@@ -4,14 +4,23 @@ import QRCode from "qrcode";
 
 const app = express();
 
-// Configuración de CORS más completa
-app.use(cors({
-  origin: 'https://generador-qr-three.vercel.app',
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  optionsSuccessStatus: 200
-}));
+// Middleware para establecer headers
+app.use((req, res, next) => {
+  res.header('Content-Type', 'application/json');
+  res.header('Access-Control-Allow-Origin', 'https://generador-qr-three.vercel.app');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  // Handle OPTIONS method
+  if (req.method === 'OPTIONS') {
+    return res.status(200).json({
+      body: "OK"
+    });
+  }
+  
+  next();
+});
 
 app.use(express.json());
 
