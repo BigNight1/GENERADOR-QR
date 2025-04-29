@@ -8,12 +8,12 @@ app.use(cors());
 app.use(express.json());
 
 // Ruta de prueba
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.json({ message: 'API QR funcionando' });
 });
 
 // Endpoint para generar código QR
-app.post("/generate-qr", async (req, res) => {
+app.post("/api/generate-qr", async (req, res) => {
   const { url } = req.body;
 
   if (!url) {
@@ -29,4 +29,11 @@ app.post("/generate-qr", async (req, res) => {
   }
 });
 
+// Manejo de errores
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Algo salió mal!' });
+});
+
+// Vercel necesita que exportemos la configuración de express
 export default app; 
