@@ -4,13 +4,7 @@ import QRCode from "qrcode";
 
 const app = express();
 
-// Configuración básica
-app.use(cors({
-  origin: 'https://generador-qr-three.vercel.app',
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type']
-}));
-
+app.use(cors());
 app.use(express.json());
 
 // Endpoint para generar código QR
@@ -30,5 +24,8 @@ app.post("/generate-qr", async (req, res) => {
   }
 });
 
-// Para Vercel, necesitamos exportar la app
-export default app;
+// Inicia el servidor
+const PORT = 3001;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
