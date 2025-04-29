@@ -1,15 +1,24 @@
 import  { useState } from 'react';
-import { Code2,  Link } from 'lucide-react';
+import { Code2, Link, MessageCircle } from 'lucide-react';
 
 function App() {
   const [url, setUrl] = useState('');
+  const [whatsappMessage, setWhatsappMessage] = useState('');
   const [qrCodeImage, setQrCodeImage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [type, setType] = useState('url'); // 'url' o 'whatsapp'
 
   const generateQRCode = async () => {
     if (!url) return;
 
     setLoading(true);
+
+    let finalUrl = url;
+    if (type === 'whatsapp') {
+      const cleanNumber = url.replace(/[^\d]/g, '');
+      const encodedMessage = encodeURIComponent(whatsappMessage);
+      finalUrl = `https://wa.me/${cleanNumber}${whatsappMessage ? `?text=${encodedMessage}` : ''}`;
+    }
 
     try {
       const response = await fetch('https://generador-qr-backend.vercel.app/api/generate-qr', {
@@ -17,13 +26,13 @@ function App() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ url })
+        body: JSON.stringify({ url: finalUrl })
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        setQrCodeImage(data.qrCode); // Recibe el código QR como imagen en Base64
+        setQrCodeImage(data.qrCode);
       } else {
         alert('Error: ' + data.error);
       }
@@ -54,29 +63,78 @@ function App() {
             <Code2 className="h-8 w-8 text-blue-600" />
             Generador de Código QR
           </h1>
-          <p className="text-gray-600">Ingresa una URL y genera un código QR automáticamente</p>
+          <p className="text-gray-600">Genera códigos QR para URLs o WhatsApp</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
           {/* Input Section */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <div className="space-y-4">
-              <label className="block text-sm font-medium text-gray-700">URL de la página</label>
+              {/* Tipo de QR */}
+              <div className="flex gap-4 mb-4">
+                <button
+                  onClick={() => setType('url')}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-md ${
+                    type === 'url' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'
+                  }`}
+                >
+                  <Link className="h-5 w-5" />
+                  URL
+                </button>
+                <button
+                  onClick={() => setType('whatsapp')}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-md ${
+                    type === 'whatsapp' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700'
+                  }`}
+                >
+                  <MessageCircle className="h-5 w-5" />
+                  WhatsApp
+                </button>
+              </div>
+
+              <label className="block text-sm font-medium text-gray-700">
+                {type === 'url' ? 'URL de la página' : 'Número de WhatsApp'}
+              </label>
               <div className="flex gap-2">
                 <div className="relative flex-1">
-                  <Link className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                  {type === 'url' ? (
+                    <Link className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                  ) : (
+                    <MessageCircle className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                  )}
                   <input
-                    type="url"
+                    type={type === 'url' ? 'url' : 'tel'}
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
-                    placeholder="https://ejemplo.com"
+                    placeholder={type === 'url' ? 'https://ejemplo.com' : '51999999999'}
                     className="pl-10 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
                   />
                 </div>
+              </div>
+
+              {/* Campo de mensaje para WhatsApp */}
+              {type === 'whatsapp' && (
+                <div className="mt-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Mensaje (opcional)
+                  </label>
+                  <textarea
+                    value={whatsappMessage}
+                    onChange={(e) => setWhatsappMessage(e.target.value)}
+                    placeholder="Escribe un mensaje que se enviará automáticamente..."
+                    className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
+                    rows={3}
+                  />
+                </div>
+              )}
+
+              <div className="mt-4">
                 <button
                   onClick={generateQRCode}
                   disabled={loading}
-                  className={`px-4 py-2 ${loading ? 'bg-gray-400' : 'bg-blue-600'} text-white rounded-md hover:bg-blue-700 transition-colors`}
+                  className={`w-full px-4 py-2 ${
+                    loading ? 'bg-gray-400' : type === 'url' ? 'bg-blue-600' : 'bg-green-600'
+                  } text-white rounded-md hover:bg-blue-700 transition-colors`}
                 >
                   {loading ? 'Generando...' : 'Generar QR'}
                 </button>
@@ -100,7 +158,7 @@ function App() {
                 </button>
               </div>
             ) : (
-              <p>No hay código QR generado.</p>
+              <p className="text-center text-gray-500">No hay código QR generado.</p>
             )}
           </div>
         </div>
