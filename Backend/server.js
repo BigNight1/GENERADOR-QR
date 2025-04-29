@@ -8,6 +8,9 @@ app.use(cors({
   origin: 'https://generador-qr-three.vercel.app', // Tu frontend
   methods: ['GET', 'POST'], // Métodos permitidos
 }));
+
+app.options('*', cors()); // 🔧 Agrega esto para responder las preflight
+
 app.use(express.json());
 
 // Endpoint para generar código QR
