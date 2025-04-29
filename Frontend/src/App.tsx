@@ -12,7 +12,7 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await fetch('https://generador-qr-production.up.railway.app/generate-qr', {
+      const response = await fetch('https://generador-qr-backend.vercel.app/generate-qr', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
