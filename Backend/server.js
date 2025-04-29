@@ -4,20 +4,13 @@ import QRCode from "qrcode";
 
 const app = express();
 
-// Configuración de CORS más completa
-const corsOptions = {
-  origin: 'https://generador-qr-three.vercel.app',
-  methods: ['GET', 'POST', 'OPTIONS'],
+// Configuración de CORS simplificada y permisiva
+app.use(cors({
+  origin: '*', // Permite todas las solicitudes
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  optionsSuccessStatus: 200,
-  preflightContinue: false
-};
-
-app.use(cors(corsOptions));
-
-// Para manejar preflight requests
-app.options('*', cors(corsOptions));
+  credentials: false // Deshabilitamos credentials ya que usamos origin: '*'
+}));
 
 app.use(express.json());
 
@@ -31,6 +24,8 @@ app.post("/generate-qr", async (req, res) => {
 
   try {
     const qrCodeImage = await QRCode.toDataURL(url);
+    // Agregamos headers explícitamente en la respuesta
+    res.header('Access-Control-Allow-Origin', '*');
     res.json({ qrCode: qrCodeImage });
   } catch (error) {
     console.error("Error generando el QR:", error);

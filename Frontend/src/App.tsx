@@ -16,7 +16,9 @@ function App() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
+        credentials: 'omit', // Deshabilitamos credentials ya que usamos origin: '*'
         body: JSON.stringify({ url }),
       });
 
