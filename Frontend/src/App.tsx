@@ -57,38 +57,38 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-2">
-            <Code2 className="h-8 w-8 text-blue-600" />
-            Generador de Código QR
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+        <div className="text-center mb-6 sm:mb-8 lg:mb-12">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-4 flex items-center justify-center gap-2 flex-wrap">
+            <Code2 className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-blue-600" />
+            <span className="whitespace-nowrap">Generador de Código QR</span>
           </h1>
-          <p className="text-gray-600">Genera códigos QR para URLs o WhatsApp</p>
+          <p className="text-sm sm:text-base text-gray-600 px-2">Genera códigos QR para URLs o WhatsApp</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
           {/* Input Section */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="bg-white p-4 sm:p-5 lg:p-6 rounded-lg shadow-md">
             <div className="space-y-4">
               {/* Tipo de QR */}
-              <div className="flex gap-4 mb-4">
+              <div className="flex gap-2 sm:gap-4 mb-4">
                 <button
                   onClick={() => setType('url')}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-md ${
+                  className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-md text-sm sm:text-base flex-1 sm:flex-none justify-center ${
                     type === 'url' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'
                   }`}
                 >
-                  <Link className="h-5 w-5" />
-                  URL
+                  <Link className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <span>URL</span>
                 </button>
                 <button
                   onClick={() => setType('whatsapp')}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-md ${
+                  className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-md text-sm sm:text-base flex-1 sm:flex-none justify-center ${
                     type === 'whatsapp' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700'
                   }`}
                 >
-                  <MessageCircle className="h-5 w-5" />
-                  WhatsApp
+                  <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <span>WhatsApp</span>
                 </button>
               </div>
 
@@ -98,16 +98,16 @@ function App() {
               <div className="flex gap-2">
                 <div className="relative flex-1">
                   {type === 'url' ? (
-                    <Link className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                    <Link className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 sm:h-5 sm:w-5" />
                   ) : (
-                    <MessageCircle className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                    <MessageCircle className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 sm:h-5 sm:w-5" />
                   )}
                   <input
                     type={type === 'url' ? 'url' : 'tel'}
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
                     placeholder={type === 'url' ? 'https://ejemplo.com' : '51999999999'}
-                    className="pl-10 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
+                    className="pl-9 sm:pl-10 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 sm:p-2.5 text-sm sm:text-base border"
                   />
                 </div>
               </div>
@@ -122,7 +122,7 @@ function App() {
                     value={whatsappMessage}
                     onChange={(e) => setWhatsappMessage(e.target.value)}
                     placeholder="Escribe un mensaje que se enviará automáticamente..."
-                    className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
+                    className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 sm:p-2.5 border text-sm sm:text-base"
                     rows={3}
                   />
                 </div>
@@ -132,9 +132,9 @@ function App() {
                 <button
                   onClick={generateQRCode}
                   disabled={loading}
-                  className={`w-full px-4 py-2 ${
-                    loading ? 'bg-gray-400' : type === 'url' ? 'bg-blue-600' : 'bg-green-600'
-                  } text-white rounded-md hover:bg-blue-700 transition-colors`}
+                  className={`w-full px-4 py-2.5 sm:py-2 text-sm sm:text-base ${
+                    loading ? 'bg-gray-400' : type === 'url' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-green-600 hover:bg-green-700'
+                  } text-white rounded-md transition-colors disabled:cursor-not-allowed`}
                 >
                   {loading ? 'Generando...' : 'Generar QR'}
                 </button>
@@ -143,22 +143,26 @@ function App() {
           </div>
 
           {/* QR Display Section */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="bg-white p-4 sm:p-5 lg:p-6 rounded-lg shadow-md">
             <div className="mb-4">
-              <h3 className="text-lg font-medium text-gray-900">Código QR Generado</h3>
+              <h3 className="text-base sm:text-lg font-medium text-gray-900">Código QR Generado</h3>
             </div>
             {qrCodeImage ? (
               <div className="text-center">
-                <img src={qrCodeImage} alt="Código QR" className="mx-auto my-4 max-w-[200px]" />
+                <img 
+                  src={qrCodeImage} 
+                  alt="Código QR" 
+                  className="mx-auto my-4 w-full max-w-[180px] sm:max-w-[200px] lg:max-w-[250px] h-auto" 
+                />
                 <button
                   onClick={handleDownloadQR}
-                  className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
+                  className="w-full sm:w-auto px-4 py-2.5 sm:py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors text-sm sm:text-base"
                 >
                   Descargar QR
                 </button>
               </div>
             ) : (
-              <p className="text-center text-gray-500">No hay código QR generado.</p>
+              <p className="text-center text-gray-500 text-sm sm:text-base py-8 sm:py-12">No hay código QR generado.</p>
             )}
           </div>
         </div>
