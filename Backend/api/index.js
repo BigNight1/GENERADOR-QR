@@ -45,5 +45,4 @@ app.listen(PORT, () => {
   console.log(`Servidor iniciado en el puerto ${PORT}`);
 });
 
-// Vercel necesita que exportemos la configuración de express
 export default app; 
